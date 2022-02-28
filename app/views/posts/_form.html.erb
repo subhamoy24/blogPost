@@ -1,0 +1,39 @@
+<%= form_with(model: post, multipart: true) do |form| %>
+  <% if post.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+      <ul>
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form.hidden_field :user_id, value: session[:current_user_id] %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :category, style: "display: block" %>
+    <%= form.select :category_id , options_for_select(Category.all.pluck(:name, :id), post.category_id )%>
+  </div>
+
+  <div style="margin-bottom: 10px;">
+    <%= form.label :image, style: "display: block;"%>
+    <%= form.file_field :thumb_nail %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
